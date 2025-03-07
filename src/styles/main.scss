@@ -1,15 +1,14 @@
 // Variables
-$primary-color: #000000;
-$secondary-color: #007aff;
-$background-color: #f5f5f7;
+$primary-color: #007aff;
+$secondary-color: #5856d6;
 $text-color: #1d1d1f;
-$border-color: #d2d2d7;
-$success-color: #34c759;
-$danger-color: #ff3b30;
+$background-color: #f5f5f7;
 $card-background: #ffffff;
-$shadow-color: rgba(0, 0, 0, 0.08);
-$max-width: 50rem;
-$input-height: 2.75rem;
+$border-color: #d2d2d7;
+$danger-color: #ff3b30;
+$success-color: #34c759;
+$max-width: 1200px;
+$input-height: 3rem;
 
 // Breakpoints
 $breakpoint-sm: 30rem; // 480px
@@ -19,32 +18,32 @@ $breakpoint-xl: 80rem; // 1280px
 
 // Media query mixins
 @mixin sm {
-  @media (min-width: $breakpoint-sm) {
+  @media (min-width: 640px) {
     @content;
   }
 }
 
 @mixin md {
-  @media (min-width: $breakpoint-md) {
+  @media (min-width: 768px) {
     @content;
   }
 }
 
 @mixin lg {
-  @media (min-width: $breakpoint-lg) {
+  @media (min-width: 1024px) {
     @content;
   }
 }
 
 @mixin xl {
-  @media (min-width: $breakpoint-xl) {
+  @media (min-width: 1280px) {
     @content;
   }
 }
 
 // Responsive font sizing mixin
 @mixin responsive-font($min-size, $max-size) {
-  font-size: clamp($min-size, calc(1rem + 1vw), $max-size);
+  font-size: clamp($min-size, calc(1rem + ((1vw - 3.2px) * 1.5)), $max-size);
 }
 
 // Mixins
@@ -55,16 +54,14 @@ $breakpoint-xl: 80rem; // 1280px
 }
 
 @mixin card-shadow {
-  box-shadow: 0 0.25rem 0.75rem $shadow-color;
-  backdrop-filter: blur(1.25rem);
-  -webkit-backdrop-filter: blur(1.25rem);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
 }
 
-@mixin hover-lift {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+@mixin hover-effect {
+  transition: all 0.2s ease;
   &:hover {
     transform: translateY(-0.125rem);
-    box-shadow: 0 0.5rem 1rem $shadow-color;
+    @include card-shadow;
   }
 }
 
@@ -101,7 +98,7 @@ body {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background-color: $background-color;
   color: $text-color;
   line-height: 1.5;
@@ -134,33 +131,117 @@ body {
   padding: 2rem 0;
 }
 
+// Accessibility
+.sr-only {
+  position: absolute;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  padding: 0;
+  margin: -0.0625rem;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Focus styles
+:focus {
+  outline: 0.125rem solid $primary-color;
+  outline-offset: 0.125rem;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 0.125rem solid $primary-color;
+  outline-offset: 0.125rem;
+}
+
+// Skip to main content link
+.skip-link {
+  position: absolute;
+  top: -2.5rem;
+  left: 0;
+  background: $primary-color;
+  color: white;
+  padding: 0.5rem 1rem;
+  z-index: 100;
+  transition: top 0.2s ease;
+
+  &:focus {
+    top: 0;
+  }
+}
+
+// High contrast mode support
+@media (forced-colors: active) {
+  * {
+    border-color: ButtonText;
+  }
+
+  .btn {
+    border: 0.125rem solid ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+  }
+
+  .note {
+    border: 0.125rem solid ButtonText;
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 // Button styles
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.75rem 1.5rem;
-  border: none;
   border-radius: 61.25rem;
-  cursor: pointer;
-  font-size: 0.9375rem;
   font-weight: 500;
-  transition: all 0.2s ease;
   text-decoration: none;
-  @include hover-lift;
+  cursor: pointer;
+  border: none;
+  background: $primary-color;
+  color: white;
+  transition: all 0.2s ease;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
 
-  &-primary {
-    background-color: $secondary-color;
-    color: white;
+  &:hover {
+    background: darken($primary-color, 10%);
+  }
+
+  &:active {
+    transform: translateY(0.0625rem);
+  }
+
+  &--secondary {
+    background: transparent;
+    color: $primary-color;
+    border: 0.0625rem solid $primary-color;
 
     &:hover {
-      background-color: darken($secondary-color, 5%);
+      background: rgba($primary-color, 0.1);
     }
   }
 
-  &-danger {
-    background-color: $danger-color;
-    color: white;
+  &--danger {
+    background: $danger-color;
 
     &:hover {
-      background-color: darken($danger-color, 5%);
+      background: darken($danger-color, 10%);
     }
   }
 }
@@ -173,62 +254,29 @@ body {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    font-size: 0.9375rem;
-    color: $text-color;
   }
 
   input,
   textarea {
     width: 100%;
-    height: $input-height;
-    padding: 0 1rem;
+    padding: 0.75rem;
     border: 0.0625rem solid $border-color;
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     font-size: 1rem;
-    background-color: $card-background;
     transition: all 0.2s ease;
-    color: $text-color;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-
-    &::placeholder {
-      color: lighten($text-color, 40%);
-    }
 
     &:focus {
-      outline: none;
-      border-color: $secondary-color;
-      box-shadow: 0 0 0 0.1875rem rgba($secondary-color, 0.1);
+      border-color: $primary-color;
+      box-shadow: 0 0 0 0.125rem rgba($primary-color, 0.2);
     }
 
     &:hover {
       border-color: darken($border-color, 10%);
     }
-
-    &:disabled {
-      background-color: lighten($background-color, 2%);
-      cursor: not-allowed;
-      opacity: 0.7;
-    }
   }
 
   textarea {
-    height: auto;
-    min-height: 6rem;
-    padding: 0.75rem 1rem;
+    min-height: 10rem;
     resize: vertical;
-  }
-
-  // Error state
-  &.error {
-    input,
-    textarea {
-      border-color: $danger-color;
-
-      &:focus {
-        box-shadow: 0 0 0 0.1875rem rgba($danger-color, 0.1);
-      }
-    }
   }
 }

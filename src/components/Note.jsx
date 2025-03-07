@@ -17,27 +17,25 @@ const Note = ({ note, onDelete }) => {
   };
 
   return (
-    <div className="note">
-      <div className="note__header">
-        {/* Add the title here */}
-        <h3 className="note__title">{title}</h3>
-        {/* Add the date here */}
-        <span className="note__date">{formatDate(createdAt)}</span>
+    <article className="note" role="listitem" aria-labelledby={`note-title-${id}`}>
+      <div className="note__content">
+        <h2 id={`note-title-${id}`} className="note__title">
+          {title}
+        </h2>
+        <time className="note__date" dateTime={createdAt} aria-label={`Created on ${formatDate(createdAt)}`}>
+          {formatDate(createdAt)}
+        </time>
+        <p className="note__preview">{content.length > 150 ? `${content.substring(0, 150)}...` : content}</p>
       </div>
-
-      {/* Add the content here */}
-      <p className="note__content">{content}</p>
-      <div className="note__actions">
-        {/* Add the Edit button using Link component */}
-        <Link to={`/edit/${id}`} className="btn btn-primary">
+      <div className="note__actions" role="group" aria-label="Note actions">
+        <Link to={`/edit/${id}`} className="btn btn--secondary" aria-label={`Edit note: ${title}`}>
           Edit
         </Link>
-        {/* Add the Delete button */}
-        <button onClick={() => onDelete(id)} className="btn btn-danger">
+        <button className="btn btn--danger" onClick={() => onDelete(id)} aria-label={`Delete note: ${title}`}>
           Delete
         </button>
       </div>
-    </div>
+    </article>
   );
 };
 

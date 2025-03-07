@@ -20,7 +20,7 @@
     }
 
     h1 {
-      color: $primary-color;
+      color: $text-color;
       @include responsive-font(1.75rem, 2.5rem);
       font-weight: 700;
       letter-spacing: -0.02em;
