@@ -1,0 +1,234 @@
+// Variables
+$primary-color: #000000;
+$secondary-color: #007aff;
+$background-color: #f5f5f7;
+$text-color: #1d1d1f;
+$border-color: #d2d2d7;
+$success-color: #34c759;
+$danger-color: #ff3b30;
+$card-background: #ffffff;
+$shadow-color: rgba(0, 0, 0, 0.08);
+$max-width: 50rem;
+$input-height: 2.75rem;
+
+// Breakpoints
+$breakpoint-sm: 30rem; // 480px
+$breakpoint-md: 48rem; // 768px
+$breakpoint-lg: 64rem; // 1024px
+$breakpoint-xl: 80rem; // 1280px
+
+// Media query mixins
+@mixin sm {
+  @media (min-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (min-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (min-width: $breakpoint-xl) {
+    @content;
+  }
+}
+
+// Responsive font sizing mixin
+@mixin responsive-font($min-size, $max-size) {
+  font-size: clamp($min-size, calc(1rem + 1vw), $max-size);
+}
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin card-shadow {
+  box-shadow: 0 0.25rem 0.75rem $shadow-color;
+  backdrop-filter: blur(1.25rem);
+  -webkit-backdrop-filter: blur(1.25rem);
+}
+
+@mixin hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  &:hover {
+    transform: translateY(-0.125rem);
+    box-shadow: 0 0.5rem 1rem $shadow-color;
+  }
+}
+
+// Reset and base styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+
+  @include sm {
+    font-size: 15px;
+  }
+
+  @include md {
+    font-size: 16px;
+  }
+
+  @include lg {
+    font-size: 17px;
+  }
+
+  @include xl {
+    font-size: 18px;
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+  background-color: $background-color;
+  color: $text-color;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// Container
+.container {
+  width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  @include md {
+    padding: 0 2rem;
+  }
+}
+
+// Main content wrapper
+.main-content {
+  flex: 1;
+  width: 100%;
+  padding: 2rem 0;
+}
+
+// Button styles
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 61.25rem;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  @include hover-lift;
+
+  &-primary {
+    background-color: $secondary-color;
+    color: white;
+
+    &:hover {
+      background-color: darken($secondary-color, 5%);
+    }
+  }
+
+  &-danger {
+    background-color: $danger-color;
+    color: white;
+
+    &:hover {
+      background-color: darken($danger-color, 5%);
+    }
+  }
+}
+
+// Form styles
+.form-group {
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    color: $text-color;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    height: $input-height;
+    padding: 0 1rem;
+    border: 0.0625rem solid $border-color;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    background-color: $card-background;
+    transition: all 0.2s ease;
+    color: $text-color;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    &::placeholder {
+      color: lighten($text-color, 40%);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $secondary-color;
+      box-shadow: 0 0 0 0.1875rem rgba($secondary-color, 0.1);
+    }
+
+    &:hover {
+      border-color: darken($border-color, 10%);
+    }
+
+    &:disabled {
+      background-color: lighten($background-color, 2%);
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+  }
+
+  textarea {
+    height: auto;
+    min-height: 6rem;
+    padding: 0.75rem 1rem;
+    resize: vertical;
+  }
+
+  // Error state
+  &.error {
+    input,
+    textarea {
+      border-color: $danger-color;
+
+      &:focus {
+        box-shadow: 0 0 0 0.1875rem rgba($danger-color, 0.1);
+      }
+    }
+  }
+}

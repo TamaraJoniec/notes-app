@@ -1,0 +1,131 @@
+@import "../main.scss";
+
+.edit-note {
+  width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 2rem 0;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+
+    h1 {
+      color: $primary-color;
+      @include responsive-font(1.75rem, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .btn {
+      min-width: 6rem;
+    }
+  }
+
+  &__form {
+    background: $card-background;
+    border-radius: 1rem;
+    padding: 2rem;
+    @include card-shadow;
+
+    .form-group {
+      margin-bottom: 1.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        font-size: 0.9375rem;
+        color: $text-color;
+      }
+
+      input {
+        width: 100%;
+        height: $input-height;
+        padding: 0 1rem;
+        border: 0.0625rem solid $border-color;
+        border-radius: 0.75rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        background-color: $card-background;
+        transition: all 0.2s ease;
+        color: $text-color;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+
+        &::placeholder {
+          color: lighten($text-color, 40%);
+        }
+
+        &:focus {
+          outline: none;
+          border-color: $secondary-color;
+          box-shadow: 0 0 0 0.1875rem rgba($secondary-color, 0.1);
+        }
+
+        &:hover {
+          border-color: darken($border-color, 10%);
+        }
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 12rem;
+        padding: 1rem;
+        border: 0.0625rem solid $border-color;
+        border-radius: 0.75rem;
+        font-size: 1rem;
+        line-height: 1.6;
+        background-color: $card-background;
+        transition: all 0.2s ease;
+        color: $text-color;
+        resize: vertical;
+
+        &::placeholder {
+          color: lighten($text-color, 40%);
+        }
+
+        &:focus {
+          outline: none;
+          border-color: $secondary-color;
+          box-shadow: 0 0 0 0.1875rem rgba($secondary-color, 0.1);
+        }
+
+        &:hover {
+          border-color: darken($border-color, 10%);
+        }
+      }
+    }
+
+    &.error {
+      .form-group {
+        input,
+        textarea {
+          border-color: $danger-color;
+
+          &:focus {
+            box-shadow: 0 0 0 0.1875rem rgba($danger-color, 0.1);
+          }
+        }
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: flex-end;
+
+    .btn {
+      min-width: 6rem;
+    }
+  }
+}
