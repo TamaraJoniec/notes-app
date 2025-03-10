@@ -3,13 +3,13 @@
 .note {
   background-color: $card-background;
   border-radius: 1rem;
-  padding: 1.5rem;
   @include card-shadow;
   @include hover-effect;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   position: relative;
+  padding: 1.5rem;
 
   &__content {
     display: flex;

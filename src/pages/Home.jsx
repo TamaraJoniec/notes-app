@@ -1,44 +1,56 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Note from "../components/Note";
-import useLocalStorage from "../hooks/useLocalStorage";
 import "../styles/pages/Home.scss";
 
 const Home = () => {
-  // Get notes from localStorage
-  const [notes, setNotes] = useLocalStorage("notes", []);
+  const [notes, setNotes] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Search state
-  const [searchTerm, setSearchTerm] = useState("");
+  useEffect(() => {
+    const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
+    setNotes(savedNotes);
+  }, []);
 
-  // Handle note deletion
-  const handleDelete = (id) => {
-    setNotes(notes.filter((note) => note.id !== id));
-  };
-
-  // Filter notes based on search term
   const filteredNotes = notes.filter(
-    (note) => note.title.toLowerCase().includes(searchTerm.toLowerCase()) || note.content.toLowerCase().includes(searchTerm.toLowerCase())
+    (note) => note.title.toLowerCase().includes(searchQuery.toLowerCase()) || note.content.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="home">
-      <div className="home__header">
-        <h1>My Notes</h1>
-        <Link to="/new" className="btn btn-primary">
-          Create New Note
-        </Link>
-      </div>
+      <div className="home__container">
+        <header className="home__header">
+          <h1>My Notes</h1>
+          <Link to="/new" className="btn" aria-label="Create new note">
+            Create New Note
+          </Link>
+        </header>
 
-      <div className="home__search">
-        <input type="text" placeholder="Search notes..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="form-group__input" />
-      </div>
+        <div className="home__search">
+          <input
+            type="search"
+            placeholder="Search notes..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            aria-label="Search notes"
+            aria-controls="notes-list"
+            aria-describedby="search-description"
+          />
+          <span id="search-description" className="sr-only">
+            Search through your notes by title or content
+          </span>
+        </div>
 
-      <div className="home__notes">
         {filteredNotes.length === 0 ? (
-          <p className="home__empty">No notes found. Create your first note!</p>
+          <div className="home__empty" role="status" aria-live="polite">
+            {searchQuery ? "No notes found matching your search." : "No notes yet. Create your first note!"}
+          </div>
         ) : (
-          filteredNotes.map((note) => <Note key={note.id} note={note} onDelete={handleDelete} />)
+          <div className="home__notes" id="notes-list" role="list" aria-label="Notes list">
+            {filteredNotes.map((note) => (
+              <Note key={note.id} note={note} />
+            ))}
+          </div>
         )}
       </div>
     </div>

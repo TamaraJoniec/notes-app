@@ -122,6 +122,11 @@ body {
   @include md {
     padding: 0 2rem;
   }
+
+  @media (max-width: 375px) {
+    padding: 0;
+    max-width: min-content;
+  }
 }
 
 // Main content wrapper
