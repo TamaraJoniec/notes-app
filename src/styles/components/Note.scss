@@ -36,10 +36,41 @@
     border-radius: 1rem;
   }
 
+  &__preview-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
   &__preview {
     color: lighten($text-color, 20%);
     font-size: 0.9375rem;
     line-height: 1.5;
+    white-space: pre-line;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  &__expand-btn {
+    align-self: flex-start;
+    background: none;
+    border: none;
+    color: $primary-color;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.25rem 0;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: darken($primary-color, 10%);
+    }
+
+    &:focus {
+      outline: none;
+      text-decoration: underline;
+    }
   }
 
   &__actions {

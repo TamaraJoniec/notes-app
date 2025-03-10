@@ -1,8 +1,9 @@
-import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/components/Note.scss";
 
 const Note = ({ note, onDelete }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
   // Destructure the note object to get its properties
   const { id, title, content, createdAt } = note;
 
@@ -16,6 +17,9 @@ const Note = ({ note, onDelete }) => {
     });
   };
 
+  const shouldShowExpandButton = content.length > 150;
+  const displayContent = isExpanded ? content : content.substring(0, 150);
+
   return (
     <article className="note" role="listitem" aria-labelledby={`note-title-${id}`}>
       <div className="note__content">
@@ -25,7 +29,17 @@ const Note = ({ note, onDelete }) => {
         <time className="note__date" dateTime={createdAt} aria-label={`Created on ${formatDate(createdAt)}`}>
           {formatDate(createdAt)}
         </time>
-        <p className="note__preview">{content.length > 150 ? `${content.substring(0, 150)}...` : content}</p>
+        <div className="note__preview-container">
+          <p className="note__preview">
+            {displayContent}
+            {!isExpanded && shouldShowExpandButton && "..."}
+          </p>
+          {shouldShowExpandButton && (
+            <button className="note__expand-btn" onClick={() => setIsExpanded(!isExpanded)} aria-expanded={isExpanded} aria-controls={`note-content-${id}`}>
+              {isExpanded ? "Show less" : "Show more"}
+            </button>
+          )}
+        </div>
       </div>
       <div className="note__actions" role="group" aria-label="Note actions">
         <Link to={`/edit/${id}`} className="btn btn--secondary" aria-label={`Edit note: ${title}`}>
