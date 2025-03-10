@@ -12,6 +12,12 @@ const Home = () => {
     setNotes(savedNotes);
   }, []);
 
+  const handleDelete = (id) => {
+    const updatedNotes = notes.filter((note) => note.id !== id);
+    setNotes(updatedNotes);
+    localStorage.setItem("notes", JSON.stringify(updatedNotes));
+  };
+
   const filteredNotes = notes.filter(
     (note) => note.title.toLowerCase().includes(searchQuery.toLowerCase()) || note.content.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -48,7 +54,7 @@ const Home = () => {
         ) : (
           <div className="home__notes" id="notes-list" role="list" aria-label="Notes list">
             {filteredNotes.map((note) => (
-              <Note key={note.id} note={note} />
+              <Note key={note.id} note={note} onDelete={handleDelete} />
             ))}
           </div>
         )}
